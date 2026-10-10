@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Calendar demo{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>📅</text></svg>">
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        <header class="demo-header">
+            <a class="demo-brand" href="{{ path('home') }}">fedale/calendar-bundle <span>demo</span></a>
+            <nav class="demo-nav" aria-label="Calendars">
+                {% for calendar_id in calendars|keys %}
+                    <a href="{{ path('calendar', {id: calendar_id}) }}"{{ calendar_id == id|default(null) ? ' aria-current="page"' }}>{{ calendar_id|capitalize }}</a>
+                {% endfor %}
+            </nav>
+            <nav class="demo-locales" aria-label="Language">
+                {% for locale in ['en', 'it'] %}
+                    <a href="?_locale={{ locale }}"{{ locale == app.request.locale ? ' aria-current="true"' }}>{{ locale|upper }}</a>
+                {% endfor %}
+            </nav>
+        </header>
+        <main class="demo-main">
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>

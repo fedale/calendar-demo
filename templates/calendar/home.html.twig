@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Calendar bundle demo</h1>
+    <p class="demo-lead">
+        A server-rendered calendar that knows nothing about the domain: each page below feeds it from a
+        different source.
+    </p>
+    <ul class="demo-cards">
+        {% for calendar_id, description in calendars %}
+            <li>
+                <a href="{{ path('calendar', {id: calendar_id}) }}">{{ calendar_id|capitalize }}</a>
+                <p>{{ description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

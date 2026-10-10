@@ -1,0 +1,118 @@
+:root {
+    color-scheme: light dark;
+    --demo-bg: #f6f7f9;
+    --demo-fg: #1f2328;
+    --demo-muted: #6b7280;
+    --demo-accent: #2563eb;
+    --demo-surface: #fff;
+    --demo-border: #e3e5e8;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --demo-bg: #0f1115;
+        --demo-fg: #e6e7ea;
+        --demo-muted: #9aa0aa;
+        --demo-accent: #5b8def;
+        --demo-surface: #16181d;
+        --demo-border: #2c3038;
+    }
+}
+
+body {
+    margin: 0;
+    background: var(--demo-bg);
+    color: var(--demo-fg);
+    font-family: system-ui, sans-serif;
+}
+
+a {
+    color: var(--demo-accent);
+}
+
+.demo-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem 1.5rem;
+    padding: .75rem 1.5rem;
+    background: var(--demo-surface);
+    border-bottom: 1px solid var(--demo-border);
+}
+
+.demo-brand {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.demo-brand span {
+    color: var(--demo-muted);
+    font-weight: 400;
+}
+
+.demo-nav,
+.demo-locales {
+    display: flex;
+    gap: 1rem;
+}
+
+.demo-nav {
+    flex: 1;
+}
+
+.demo-nav a,
+.demo-locales a {
+    color: var(--demo-muted);
+    text-decoration: none;
+}
+
+.demo-nav a[aria-current],
+.demo-locales a[aria-current] {
+    color: var(--demo-fg);
+    font-weight: 600;
+}
+
+.demo-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.demo-main h1 {
+    margin: 0 0 .25rem;
+}
+
+.demo-lead {
+    margin: 0 0 1.5rem;
+    color: var(--demo-muted);
+}
+
+.demo-main .cal {
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.demo-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+.demo-cards li {
+    padding: 1rem;
+    background: var(--demo-surface);
+    border: 1px solid var(--demo-border);
+    border-radius: 8px;
+}
+
+.demo-cards a {
+    font-weight: 600;
+}
+
+.demo-cards p {
+    margin: .5rem 0 0;
+    color: var(--demo-muted);
+}

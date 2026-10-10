@@ -1,0 +1,4 @@
+fedale_calendar:
+    defaults:
+        display:
+            timezone: Europe/Rome

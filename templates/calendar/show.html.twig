@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ label }} · Calendar demo{% endblock %}
+
+{% block body %}
+    <h1>{{ label }}</h1>
+    <p class="demo-lead">{{ description }}</p>
+    <twig:Fedale:Calendar :calendar="id" />
+{% endblock %}
