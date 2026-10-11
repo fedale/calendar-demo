@@ -1,7 +1,7 @@
 doctrine:
     dbal:
-        # The demo always runs on SQLite, in var/: no server to set up.
-        url: 'sqlite:///%kernel.project_dir%/var/data.db'
+        # SQLite in var/data.db (see .env): no server to set up.
+        url: '%env(resolve:DATABASE_URL)%'
 
         profiling_collect_backtrace: '%kernel.debug%'
 
