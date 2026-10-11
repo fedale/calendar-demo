@@ -16,7 +16,9 @@ final class CalendarController extends AbstractController
         'seats' => 'All-day bookings. Other people\'s desks are "Busy": the source withholds their names. Weekends are hidden.',
         'lessons' => 'A weekly timetable expanded by the source; the list view is the default, one week per page.',
         'overview' => 'Three unrelated sources on one calendar.',
+        'rooms' => 'A resource timeline: rooms grouped by building, a room split into two nested halves, day / week / month, and a custom "Add event" button.',
         'stress' => 'About 500 events a month, to measure rendering cost.',
+        'rooms_many' => 'The resource timeline with 50 rooms, to measure rendering cost.',
     ];
 
     public function __construct(private readonly CalendarRegistry $calendars)

@@ -8,6 +8,16 @@
                     "@symfony/ux-live-component/dist/live.min.css": true
                 }
             }
+        },
+        "@fedale/calendar-bundle": {
+            "timeline": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
+            "button": {
+                "enabled": true,
+                "fetch": "lazy"
+            }
         }
     },
     "entrypoints": []

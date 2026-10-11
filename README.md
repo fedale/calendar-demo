@@ -12,7 +12,9 @@ Each page feeds the same calendar component from a different source:
 | Seats | All-day desk bookings; other people's bookings are "Busy" because the source withholds their names; weekends are hidden |
 | Lessons | A weekly timetable expanded by the source, with the list view as the default, one week per page |
 | Overview | The three sources above on one calendar |
+| Rooms | A resource timeline: rooms grouped by building, a room split into two nested halves, day / week / month, and an "Add event" button handled in `assets/app.js` |
 | Stress | About 500 events a month, to measure rendering cost |
+| Rooms many | The timeline with 50 rooms, to measure rendering cost |
 
 There is no database: the sources generate their events from a random generator seeded by the date,
 so a given day always shows the same events.

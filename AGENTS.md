@@ -11,7 +11,8 @@ works right after `composer install`.
 ### Layout
 
 - `src/Calendar/Source/` - the event sources (`#[AsCalendarSource]`), one per demo domain: shifts,
-  seats, lessons, plus `StressSource` for load tests. `DemoDays` seeds the random generator by
+  seats, lessons, rooms (`RoomSource` also provides the timeline's resources), plus `StressSource`
+  and `ManyRoomsSource` for load tests. `DemoDays` seeds the random generator by
   source and date, so a day always yields the same events whatever range is requested; keep it that
   way, or navigation shows different data for the same day.
 - `src/Calendar/Definition/` - the calendars (`#[AsCalendar]`) and their `viewConfig()`
@@ -21,6 +22,8 @@ works right after `composer install`.
   Component requests use it too
 - `config/packages/fedale_calendar.yaml` - bundle configuration
 - `importmap.php` - includes the bundle stylesheet (`@fedale/calendar-bundle/styles/calendar.css`)
+- `assets/controllers.json` - enables the bundle's Stimulus controllers (`cal-timeline`, `cal-button`)
+- `assets/app.js` - handles the `demo:add-event` DOM event of the rooms calendar's custom button
 
 ### Working with calendar-bundle
 

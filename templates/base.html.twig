@@ -14,7 +14,7 @@
             <a class="demo-brand" href="{{ path('home') }}">fedale/calendar-bundle <span>demo</span></a>
             <nav class="demo-nav" aria-label="Calendars">
                 {% for calendar_id in calendars|keys %}
-                    <a href="{{ path('calendar', {id: calendar_id}) }}"{{ calendar_id == id|default(null) ? ' aria-current="page"' }}>{{ calendar_id|capitalize }}</a>
+                    <a href="{{ path('calendar', {id: calendar_id}) }}"{{ calendar_id == id|default(null) ? ' aria-current="page"' }}>{{ calendar_id|replace({'_': ' '})|capitalize }}</a>
                 {% endfor %}
             </nav>
             <nav class="demo-locales" aria-label="Language">

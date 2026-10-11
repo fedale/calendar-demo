@@ -17,8 +17,7 @@ final class LessonCalendar extends AbstractCalendar
     {
         return [
             'display' => [
-                'views' => ['enabled' => ['list', 'month'], 'default' => 'list'],
-                'list' => ['range' => 'week'],
+                'views' => ['enabled' => ['listWeek', 'month'], 'default' => 'listWeek'],
             ],
             'integration' => ['sources' => ['lessons']],
         ];

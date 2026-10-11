@@ -9,7 +9,7 @@
     <ul class="demo-cards">
         {% for calendar_id, description in calendars %}
             <li>
-                <a href="{{ path('calendar', {id: calendar_id}) }}">{{ calendar_id|capitalize }}</a>
+                <a href="{{ path('calendar', {id: calendar_id}) }}">{{ calendar_id|replace({'_': ' '})|capitalize }}</a>
                 <p>{{ description }}</p>
             </li>
         {% endfor %}
