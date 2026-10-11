@@ -8,11 +8,11 @@ Each page feeds the same calendar component from a different source:
 
 | Page | What it shows |
 |---|---|
-| Shifts | Morning, afternoon and night shifts; night shifts cross midnight but stay on the day they start (`nextDayThreshold`), public holidays are background bands, week numbers are on |
+| Shifts | Morning, afternoon and night shifts in month, week, day and list views; in the month, night shifts stay on the day they start (`nextDayThreshold`); public holidays are background bands, week numbers are on |
 | Seats | All-day desk bookings; other people's bookings are "Busy" because the source withholds their names; weekends are hidden |
-| Lessons | A weekly timetable expanded by the source, with the list view as the default, one week per page |
+| Lessons | A weekly timetable expanded by the source: a weekly list by default, and a week time grid limited to school hours, with business hours shaded |
 | Overview | The three sources above on one calendar |
-| Rooms | A resource timeline: rooms grouped by building, a room split into two nested halves, day / week / month, and an "Add event" button handled in `assets/app.js` |
+| Rooms | A resource timeline: rooms grouped by building, a room split into two nested halves, day / week / month, one column per room ("Columns"), business hours, and an "Add event" button handled in `assets/app.js` |
 | Stress | About 500 events a month, to measure rendering cost |
 | Rooms many | The timeline with 50 rooms, to measure rendering cost |
 
@@ -55,6 +55,18 @@ To change the load of the stress calendar, set the number of timed events per da
 
 ```bash
 $ CALENDAR_STRESS_PER_DAY=32 symfony serve
+```
+
+Benchmark
+---------
+
+`bin/benchmark` measures a calendar page and one Live navigation against a running server, as the
+median of several runs. Run the server in prod mode, so the numbers leave out the profiler:
+
+```bash
+$ APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+$ APP_ENV=prod APP_DEBUG=0 php -S 127.0.0.1:8002 -t public &
+$ bin/benchmark http://127.0.0.1:8002 'rooms_many?view=timelineMonth'
 ```
 
 Tests

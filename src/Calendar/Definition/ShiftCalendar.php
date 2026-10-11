@@ -17,7 +17,11 @@ final class ShiftCalendar extends AbstractCalendar
     {
         return [
             // Night shifts (22:00-06:00) stay on the day they start.
-            'display' => ['weekNumbers' => true, 'nextDayThreshold' => '09:00'],
+            'display' => [
+                'weekNumbers' => true,
+                'nextDayThreshold' => '09:00',
+                'views' => ['enabled' => ['month', 'timeGridWeek', 'timeGridDay', 'listMonth']],
+            ],
             'integration' => ['sources' => ['shifts']],
         ];
     }

@@ -17,7 +17,14 @@ final class LessonCalendar extends AbstractCalendar
     {
         return [
             'display' => [
-                'views' => ['enabled' => ['listWeek', 'month'], 'default' => 'listWeek'],
+                'views' => [
+                    'enabled' => ['listWeek', 'timeGridWeek', 'month'],
+                    'default' => 'listWeek',
+                    // School hours only; the built-in variant keeps its other parameters.
+                    'variants' => ['timeGridWeek' => ['dayStart' => '07:00', 'dayEnd' => '19:00']],
+                ],
+                'hiddenDays' => [6, 7],
+                'businessHours' => [['days' => [1, 2, 3, 4, 5], 'start' => '08:00', 'end' => '14:00']],
             ],
             'integration' => ['sources' => ['lessons']],
         ];

@@ -10,7 +10,7 @@
             }
         },
         "@fedale/calendar-bundle": {
-            "timeline": {
+            "now": {
                 "enabled": true,
                 "fetch": "lazy"
             },

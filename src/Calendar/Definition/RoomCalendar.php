@@ -22,9 +22,11 @@ class RoomCalendar extends AbstractCalendar
         return [
             'display' => [
                 'views' => [
-                    'enabled' => ['timelineDay', 'timelineWeek', 'timelineMonth'],
+                    'enabled' => ['timelineDay', 'timelineWeek', 'timelineMonth', 'resourceTimeGridDay'],
                     'default' => 'timelineDay',
+                    'variants' => ['resourceTimeGridDay' => ['label' => 'Columns']],
                 ],
+                'businessHours' => [['days' => [1, 2, 3, 4, 5], 'start' => '08:00', 'end' => '20:00']],
                 'toolbar' => ['start' => 'add prev,today,next', 'center' => 'title', 'end' => 'views'],
                 'buttons' => ['add' => ['label' => 'Add event', 'event' => 'demo:add-event']],
                 'resources' => [

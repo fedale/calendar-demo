@@ -22,7 +22,8 @@ works right after `composer install`.
   Component requests use it too
 - `config/packages/fedale_calendar.yaml` - bundle configuration
 - `importmap.php` - includes the bundle stylesheet (`@fedale/calendar-bundle/styles/calendar.css`)
-- `assets/controllers.json` - enables the bundle's Stimulus controllers (`cal-timeline`, `cal-button`)
+- `assets/controllers.json` - enables the bundle's Stimulus controllers (`cal-now`, `cal-button`)
+- `bin/benchmark` - measures a page and a Live navigation against a running server (see README)
 - `assets/app.js` - handles the `demo:add-event` DOM event of the rooms calendar's custom button
 
 ### Working with calendar-bundle

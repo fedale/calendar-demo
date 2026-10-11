@@ -1,0 +1,80 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * Measures a demo calendar page and one Live navigation ("next") against a
+ * running server, as the median of several runs.
+ *
+ *   bin/benchmark http://127.0.0.1:8000 'rooms_many?view=timelineMonth' [runs]
+ *
+ * Run it against a prod-mode server (APP_ENV=prod APP_DEBUG=0): dev adds the
+ * profiler and debug overhead to every request.
+ */
+
+if ($argc < 3) {
+    fwrite(STDERR, "Usage: bin/benchmark <base-url> <calendar-id[?query]> [runs]\n");
+    exit(1);
+}
+[, $base, $page] = $argv;
+$runs = max(1, (int) ($argv[3] ?? 7));
+
+function fetch(string $url, ?array $post = null): array
+{
+    $curl = curl_init($url);
+    curl_setopt_array($curl, [CURLOPT_RETURNTRANSFER => true, CURLOPT_COOKIEFILE => '']);
+    if ($post !== null) {
+        // A Live Component action: the XMLHttpRequest header is required by
+        // its CSRF protection, the Accept header selects the HTML response.
+        curl_setopt_array($curl, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($post),
+            CURLOPT_HTTPHEADER => ['Accept: application/vnd.live-component+html', 'X-Requested-With: XMLHttpRequest'],
+        ]);
+    }
+    $body = (string) curl_exec($curl);
+    $info = curl_getinfo($curl);
+
+    return [$body, $info['http_code'], $info['total_time'], $info['size_download']];
+}
+
+function median(array $values): float
+{
+    sort($values);
+
+    return $values[intdiv(count($values), 2)];
+}
+
+$pageTimes = $liveTimes = [];
+$pageSize = $liveSize = 0;
+$html = '';
+for ($i = 0; $i < $runs; ++$i) {
+    [$html, $code, $time, $pageSize] = fetch("$base/calendar/$page");
+    if ($code !== 200) {
+        fwrite(STDERR, "Page answered $code.\n");
+        exit(1);
+    }
+    $pageTimes[] = $time;
+
+    if (preg_match('/data-live-props-value="([^"]+)"/', $html, $match) !== 1) {
+        fwrite(STDERR, "No Live Component found on the page.\n");
+        exit(1);
+    }
+    $props = json_decode(html_entity_decode($match[1], ENT_QUOTES | ENT_HTML5), true);
+    $data = json_encode(['props' => $props, 'updated' => new stdClass(), 'children' => new stdClass(), 'args' => new stdClass()]);
+    [$body, $code, $time, $liveSize] = fetch("$base/_components/Fedale:Calendar/next", ['data' => $data]);
+    if ($code !== 200) {
+        fwrite(STDERR, "Live action answered $code.\n");
+        exit(1);
+    }
+    $liveTimes[] = $time;
+}
+
+printf(
+    "%-45s page %4.0f ms %7.1f KB | live next %4.0f ms %7.1f KB | %d event elements\n",
+    $page,
+    median($pageTimes) * 1000,
+    $pageSize / 1024,
+    median($liveTimes) * 1000,
+    $liveSize / 1024,
+    substr_count($html, 'data-cal-event='),
+);

@@ -16,6 +16,7 @@ final class StressCalendar extends AbstractCalendar
     public function viewConfig(): array
     {
         return [
+            'display' => ['views' => ['enabled' => ['month', 'timeGridWeek', 'listMonth']]],
             'integration' => ['sources' => ['stress']],
         ];
     }
