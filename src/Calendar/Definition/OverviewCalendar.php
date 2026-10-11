@@ -20,6 +20,7 @@ final class OverviewCalendar extends AbstractCalendar
     public function viewConfig(): array
     {
         return [
+            'display' => ['views' => ['enabled' => ['year', 'month', 'listMonth'], 'default' => 'month']],
             'integration' => ['sources' => ['lessons', 'seats', 'shifts']],
         ];
     }

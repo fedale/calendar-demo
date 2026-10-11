@@ -7,13 +7,18 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/doctrine-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
+        "doctrine/orm": "^3.7",
         "fedale/calendar-bundle": "@dev",
+        "fedale/setting-bundle": "@dev",
         "symfony/asset": "8.1.*",
         "symfony/asset-mapper": "8.1.*",
         "symfony/clock": "8.1.*",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
         "symfony/flex": "^2",
+        "symfony/form": "8.1.*",
         "symfony/framework-bundle": "8.1.*",
         "symfony/intl": "8.1.*",
         "symfony/runtime": "8.1.*",
@@ -22,6 +27,7 @@
         "symfony/twig-bundle": "8.1.*",
         "symfony/ux-live-component": "^2.36",
         "symfony/ux-twig-component": "^2.36",
+        "symfony/validator": "8.1.*",
         "symfony/yaml": "8.1.*"
     },
     "config": {
@@ -78,6 +84,16 @@
         }
     },
     "repositories": [{
+        "name": "setting-bundle",
+        "type": "path",
+        "url": "../setting-bundle",
+        "options": {
+            "symlink": true,
+            "versions": {
+                "fedale/setting-bundle": "1.1.x-dev"
+            }
+        }
+    },{
         "name": "calendar-bundle",
         "type": "path",
         "url": "../calendar-bundle",
@@ -92,6 +108,8 @@
         "phpunit/phpunit": "^13.4",
         "symfony/browser-kit": "8.1.*",
         "symfony/css-selector": "8.1.*",
-        "symfony/web-profiler-bundle": "8.1.*"
+        "symfony/maker-bundle": "^1.68",
+        "symfony/web-profiler-bundle": "8.1.*",
+        "zenstruck/foundry": "^2.14"
     }
 }

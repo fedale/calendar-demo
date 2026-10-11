@@ -1,0 +1,5 @@
+# Body of the calendars' UI settings dialog (toolbar item "settings").
+fedale_calendar_ui_settings:
+    resource: '@FedaleCalendarBundle/src/Controller/UiSettingsController.php'
+    type: attribute
+    prefix: /calendar/_settings

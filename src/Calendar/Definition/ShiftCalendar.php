@@ -20,7 +20,7 @@ final class ShiftCalendar extends AbstractCalendar
             'display' => [
                 'weekNumbers' => true,
                 'nextDayThreshold' => '09:00',
-                'views' => ['enabled' => ['month', 'timeGridWeek', 'timeGridDay', 'listMonth']],
+                'views' => ['enabled' => ['year', 'month', 'timeGridWeek', 'timeGridDay', 'listMonth'], 'default' => 'month'],
             ],
             'integration' => ['sources' => ['shifts']],
         ];

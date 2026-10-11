@@ -2,3 +2,6 @@ fedale_calendar:
     defaults:
         display:
             timezone: Europe/Rome
+            # The gear opens the UI settings dialog (needs setting-bundle).
+            toolbar:
+                end: 'views settings'

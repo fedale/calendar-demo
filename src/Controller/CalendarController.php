@@ -17,8 +17,9 @@ final class CalendarController extends AbstractController
         'lessons' => 'A weekly timetable expanded by the source; the list view is the default, one week per page.',
         'overview' => 'Three unrelated sources on one calendar.',
         'rooms' => 'A resource timeline you can edit: drag a booking to move it (also to another room), drag its end to resize it, drag over empty time to book, Delete to cancel. Overlapping bookings in a room are refused by the source. Changes live in your session.',
+        'team' => 'People\'s agendas from the database: an appointment shows on every participant\'s row. Drop it on another row to swap that participant; a meeting held in a booked room moves with its booking, if the room is free.',
         'stress' => 'About 500 events a month, to measure rendering cost.',
-        'rooms_many' => 'The resource timeline with 50 rooms, to measure rendering cost.',
+        'rooms_many' => 'Every room of the database (54, about 8,000 bookings over three months), to measure rendering cost.',
     ];
 
     public function __construct(private readonly CalendarRegistry $calendars)

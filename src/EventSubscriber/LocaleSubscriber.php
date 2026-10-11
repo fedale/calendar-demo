@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 final class LocaleSubscriber
 {
-    private const LOCALES = ['en', 'it'];
+    private const LOCALES = ['en', 'it', 'fr', 'de', 'es'];
 
     // Before the LocaleListener (priority 16), which reads the request locale.
     #[AsEventListener(event: KernelEvents::REQUEST, priority: 20)]

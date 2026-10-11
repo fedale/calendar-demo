@@ -27,7 +27,7 @@ class RoomCalendar extends AbstractCalendar
                     'variants' => ['resourceTimeGridDay' => ['label' => 'Columns']],
                 ],
                 'businessHours' => [['days' => [1, 2, 3, 4, 5], 'start' => '08:00', 'end' => '20:00']],
-                'toolbar' => ['start' => 'add prev,today,next', 'center' => 'title', 'end' => 'views'],
+                'toolbar' => ['start' => 'add prev,today,next', 'center' => 'title', 'end' => 'views settings'],
                 'buttons' => ['add' => ['label' => 'Add event', 'event' => 'demo:add-event']],
                 'resources' => [
                     'label' => 'Rooms',

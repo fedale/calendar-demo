@@ -1,0 +1,47 @@
+doctrine:
+    dbal:
+        # The demo always runs on SQLite, in var/: no server to set up.
+        url: 'sqlite:///%kernel.project_dir%/var/data.db'
+
+        profiling_collect_backtrace: '%kernel.debug%'
+
+        # Dates are stored in UTC (SQLite keeps no timezone); the calendar
+        # converts them to the display timezone.
+        types:
+            datetime_immutable: App\Doctrine\UtcDateTimeImmutableType
+    orm:
+        validate_xml_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        identity_generation_preferences:
+            Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
+        auto_mapping: true
+        mappings:
+            App:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+
+when@test:
+    doctrine:
+        dbal:
+            url: 'sqlite:///%kernel.project_dir%/var/test.db'
+
+when@prod:
+    doctrine:
+        orm:
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system

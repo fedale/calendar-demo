@@ -18,7 +18,7 @@
                 {% endfor %}
             </nav>
             <nav class="demo-locales" aria-label="Language">
-                {% for locale in ['en', 'it'] %}
+                {% for locale in ['en', 'it', 'fr', 'de', 'es'] %}
                     <a href="?_locale={{ locale }}"{{ locale == app.request.locale ? ' aria-current="true"' }}>{{ locale|upper }}</a>
                 {% endfor %}
             </nav>

@@ -1,14 +1,5 @@
 {
     "controllers": {
-        "@symfony/ux-live-component": {
-            "live": {
-                "enabled": true,
-                "fetch": "eager",
-                "autoimport": {
-                    "@symfony/ux-live-component/dist/live.min.css": true
-                }
-            }
-        },
         "@fedale/calendar-bundle": {
             "now": {
                 "enabled": true,
@@ -21,6 +12,19 @@
             "interact": {
                 "enabled": true,
                 "fetch": "eager"
+            },
+            "ui-settings": {
+                "enabled": true,
+                "fetch": "lazy"
+            }
+        },
+        "@symfony/ux-live-component": {
+            "live": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "@symfony/ux-live-component/dist/live.min.css": true
+                }
             }
         }
     },

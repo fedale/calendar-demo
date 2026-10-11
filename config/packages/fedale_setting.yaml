@@ -1,0 +1,5 @@
+fedale_setting:
+    # Settings live in the demo database (var/data.db), like gridview-demo:
+    # the calendars' UI settings are scoped settings in the setting_scoped table.
+    scoped:
+        store: doctrine
