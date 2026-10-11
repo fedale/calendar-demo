@@ -19,7 +19,10 @@ final class LocaleSubscriber
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->hasSession()) {
+        // Stateless requests (the API) must not open the session, nor the
+        // sub-requests they make to render an error: those keep the main
+        // request's locale anyway.
+        if (!$event->isMainRequest() || !$request->hasSession() || $request->attributes->getBoolean('_stateless')) {
             return;
         }
         $session = $request->getSession();

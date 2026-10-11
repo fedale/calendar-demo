@@ -1,0 +1,14 @@
+api_platform:
+    title: Calendar demo API
+    description: 'The calendars of the demo through calendar-bundle''s API Platform bridge: calendars, their events and resources, and the same intents as the UI (move, resize, delete, select).'
+    version: 1.0.0
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+    # The API is the bridge's DTOs, not the entities: no Doctrine integration needed.
+    doctrine:
+        enabled: false
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']

@@ -10,6 +10,7 @@ use App\Repository\PersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Fedale\CalendarBundle\Attribute\AsCalendarSource;
+use Fedale\CalendarBundle\Contract\EventFinderInterface;
 use Fedale\CalendarBundle\Contract\EventSourceInterface;
 use Fedale\CalendarBundle\Contract\IntentHandlerInterface;
 use Fedale\CalendarBundle\Contract\ResourceSourceInterface;
@@ -36,7 +37,7 @@ use Symfony\Contracts\Service\ResetInterface;
  * booking, and only if the room is free at the new time.
  */
 #[AsCalendarSource('team')]
-final class TeamSource implements EventSourceInterface, ResourceSourceInterface, IntentHandlerInterface, ResetInterface
+final class TeamSource implements EventSourceInterface, ResourceSourceInterface, IntentHandlerInterface, EventFinderInterface, ResetInterface
 {
     /** @var array<string, Person>|null id => person */
     private ?array $people = null;
@@ -59,21 +60,35 @@ final class TeamSource implements EventSourceInterface, ResourceSourceInterface,
     public function getEvents(CalendarQuery $query): iterable
     {
         foreach ($this->appointments->findInRange($query->range->start, $query->range->end) as $appointment) {
-            $room = $appointment->getBooking()?->getRoom()?->getName();
-            yield new CalendarEvent(
-                id: (string) $appointment->getId(),
-                title: $appointment->getTitle().($room !== null ? ' · '.$room : ''),
-                start: $appointment->getStartsAt(),
-                end: $appointment->getEndsAt(),
-                allDay: $appointment->isAllDay(),
-                resourceIds: array_map(fn(Person $person) => (string) $person->getId(), $appointment->getParticipants()->toArray()),
-                type: $room !== null ? 'meeting' : 'appointment',
-                interactions: new EventInteractions(movable: true, resizable: true, deletable: true),
-                version: (string) $appointment->getVersion(),
-                style: new EventStyle(color: $appointment->getOwner()?->getColor()),
-                hints: ['owner' => $appointment->getOwner()?->getName(), 'room' => $room],
-            );
+            yield $this->event($appointment);
         }
+    }
+
+    /** For the API: one appointment by id. */
+    public function findEvent(string $id): ?CalendarEvent
+    {
+        $appointment = $this->appointments->find((int) $id);
+
+        return $appointment !== null ? $this->event($appointment) : null;
+    }
+
+    private function event(Appointment $appointment): CalendarEvent
+    {
+        $room = $appointment->getBooking()?->getRoom()?->getName();
+
+        return new CalendarEvent(
+            id: (string) $appointment->getId(),
+            title: $appointment->getTitle().($room !== null ? ' · '.$room : ''),
+            start: $appointment->getStartsAt(),
+            end: $appointment->getEndsAt(),
+            allDay: $appointment->isAllDay(),
+            resourceIds: array_map(fn(Person $person) => (string) $person->getId(), $appointment->getParticipants()->toArray()),
+            type: $room !== null ? 'meeting' : 'appointment',
+            interactions: new EventInteractions(movable: true, resizable: true, deletable: true),
+            version: (string) $appointment->getVersion(),
+            style: new EventStyle(color: $appointment->getOwner()?->getColor()),
+            hints: ['owner' => $appointment->getOwner()?->getName(), 'room' => $room],
+        );
     }
 
     public function handle(CalendarIntent $intent): IntentResult

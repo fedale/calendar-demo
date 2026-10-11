@@ -5,3 +5,9 @@ fedale_calendar:
             # The gear opens the UI settings dialog (needs setting-bundle).
             toolbar:
                 end: 'views settings'
+
+    # The API Platform bridge (/api): off unless enabled. The demo exposes
+    # every calendar with no access check, as it has no users; a real
+    # application lists the calendars and sets read/write security attributes.
+    api:
+        enabled: true

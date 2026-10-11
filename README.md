@@ -86,6 +86,28 @@ To change the load of the stress calendar, set the number of timed events per da
 $ CALENDAR_STRESS_PER_DAY=32 symfony serve
 ```
 
+API
+---
+
+The calendars are also an API, through calendar-bundle's API Platform bridge: open
+`http://127.0.0.1:8000/api` for the interactive documentation. Clients read what the calendar
+shows and send the same intents as the UI, so the domain rules apply as well:
+
+```bash
+$ curl -H 'Accept: application/json' \
+    'http://127.0.0.1:8000/api/calendars/rooms/events?start=2026-10-13T08:00:00%2B02:00&end=2026-10-13T12:00:00%2B02:00'
+
+$ curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'If-Match: "1"' \
+    -d '{"start": "2026-10-13T07:00:00+02:00", "end": "2026-10-13T07:30:00+02:00"}' \
+    http://127.0.0.1:8000/api/calendars/rooms/events/rooms/2874/move
+```
+
+A stale `If-Match` answers 409, an overlapping booking 422, an event that cannot move 403.
+
+The bridge is turned on in `config/packages/fedale_calendar.yaml` (`api.enabled`). The demo
+exposes every calendar without access checks because it has no users; a real application lists
+the calendars to expose and sets read/write security attributes (see the bundle's README).
+
 Benchmark
 ---------
 

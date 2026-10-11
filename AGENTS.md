@@ -34,6 +34,10 @@ like gridview-demo: Doctrine entities, Foundry factories, one story of demo data
 - `src/EventSubscriber/LocaleSubscriber.php` - `?_locale=en|it|fr|de|es`, kept in the session so
   Live Component requests use it too
 - `config/packages/doctrine.yaml` - SQLite in `var/data.db` (`var/test.db` for tests)
+- `config/packages/api_platform.yaml`, `config/routes/api_platform.yaml` - the API under `/api`
+  (calendar-bundle's bridge; JSON-LD and JSON). The database sources implement
+  `EventFinderInterface`, so API writes get the same checks as the UI's. The API is stateless:
+  `LocaleSubscriber` must not open the session there
 - `config/packages/fedale_setting.yaml`, `config/routes/fedale_calendar.yaml` - the calendars'
   end-user settings, stored by setting-bundle in the same database
 - `config/packages/fedale_calendar.yaml` - bundle configuration

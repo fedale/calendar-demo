@@ -12,6 +12,7 @@ use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Fedale\CalendarBundle\Attribute\AsCalendarSource;
+use Fedale\CalendarBundle\Contract\EventFinderInterface;
 use Fedale\CalendarBundle\Contract\EventSourceInterface;
 use Fedale\CalendarBundle\Contract\IntentHandlerInterface;
 use Fedale\CalendarBundle\Contract\ResourceSourceInterface;
@@ -39,7 +40,7 @@ use Symfony\Contracts\Service\ResetInterface;
  * CalendarEvent and CalendarResource out, intents back into entity changes.
  */
 #[AsCalendarSource('rooms')]
-class RoomSource implements EventSourceInterface, ResourceSourceInterface, IntentHandlerInterface, ResetInterface
+class RoomSource implements EventSourceInterface, ResourceSourceInterface, IntentHandlerInterface, EventFinderInterface, ResetInterface
 {
     /** @var list<Room>|null */
     private ?array $roomList = null;
@@ -70,6 +71,14 @@ class RoomSource implements EventSourceInterface, ResourceSourceInterface, Inten
         foreach ($this->bookings->findInRange($query->range->start, $query->range->end, $this->roomList()) as $booking) {
             yield $this->event($booking);
         }
+    }
+
+    /** For the API: one booking by id, if it is in this source's rooms. */
+    public function findEvent(string $id): ?CalendarEvent
+    {
+        $booking = $this->bookings->find((int) $id);
+
+        return $booking !== null && \in_array($booking->getRoom(), $this->roomList(), true) ? $this->event($booking) : null;
     }
 
     public function handle(CalendarIntent $intent): IntentResult

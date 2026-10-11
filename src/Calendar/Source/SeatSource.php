@@ -11,6 +11,7 @@ use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Fedale\CalendarBundle\Attribute\AsCalendarSource;
+use Fedale\CalendarBundle\Contract\EventFinderInterface;
 use Fedale\CalendarBundle\Contract\EventSourceInterface;
 use Fedale\CalendarBundle\Contract\IntentHandlerInterface;
 use Fedale\CalendarBundle\Intent\CalendarIntent;
@@ -33,7 +34,7 @@ use Symfony\Contracts\Service\ResetInterface;
  * working days only.
  */
 #[AsCalendarSource('seats')]
-final class SeatSource implements EventSourceInterface, IntentHandlerInterface, ResetInterface
+final class SeatSource implements EventSourceInterface, IntentHandlerInterface, EventFinderInterface, ResetInterface
 {
     /** @var list<Room>|null */
     private ?array $desks = null;
@@ -49,20 +50,16 @@ final class SeatSource implements EventSourceInterface, IntentHandlerInterface, 
     public function getEvents(CalendarQuery $query): iterable
     {
         foreach ($this->bookings->findInRange($query->range->start, $query->range->end, $this->desks()) as $booking) {
-            $mine = $this->user->is($booking->getOrganizer());
-            yield new CalendarEvent(
-                id: (string) $booking->getId(),
-                title: $booking->getRoom()?->getName().($mine ? ' (you)' : ' · '.$booking->getOrganizer()?->getName()),
-                start: $booking->getStartsAt(),
-                end: $booking->getEndsAt(),
-                allDay: true,
-                type: 'desk',
-                visibility: $mine ? EventVisibility::Full : EventVisibility::BusyOnly,
-                interactions: new EventInteractions(movable: $mine, deletable: $mine),
-                version: (string) $booking->getVersion(),
-                style: new EventStyle(color: $mine ? '#16a34a' : '#64748b'),
-            );
+            yield $this->event($booking);
         }
+    }
+
+    /** For the API: one desk booking by id. */
+    public function findEvent(string $id): ?CalendarEvent
+    {
+        $booking = $this->bookings->find((int) $id);
+
+        return $booking !== null && \in_array($booking->getRoom(), $this->desks(), true) ? $this->event($booking) : null;
     }
 
     public function handle(CalendarIntent $intent): IntentResult
@@ -120,6 +117,24 @@ final class SeatSource implements EventSourceInterface, IntentHandlerInterface, 
     public function reset(): void
     {
         $this->desks = null;
+    }
+
+    private function event(Booking $booking): CalendarEvent
+    {
+        $mine = $this->user->is($booking->getOrganizer());
+
+        return new CalendarEvent(
+            id: (string) $booking->getId(),
+            title: $booking->getRoom()?->getName().($mine ? ' (you)' : ' · '.$booking->getOrganizer()?->getName()),
+            start: $booking->getStartsAt(),
+            end: $booking->getEndsAt(),
+            allDay: true,
+            type: 'desk',
+            visibility: $mine ? EventVisibility::Full : EventVisibility::BusyOnly,
+            interactions: new EventInteractions(movable: $mine, deletable: $mine),
+            version: (string) $booking->getVersion(),
+            style: new EventStyle(color: $mine ? '#16a34a' : '#64748b'),
+        );
     }
 
     /**

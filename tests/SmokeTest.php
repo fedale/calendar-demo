@@ -95,6 +95,27 @@ final class SmokeTest extends WebTestCase
         self::assertSame($booking->getVersion() + 1, $moved?->getVersion());
     }
 
+    public function testTheApiReadsAndMovesThroughTheSameRules(): void
+    {
+        $booking = static::getContainer()->get(BookingRepository::class)->findOneBy(['allDay' => false]);
+        \assert($booking instanceof Booking);
+        $json = ['HTTP_ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'];
+
+        $this->client->request('GET', '/api/calendars/rooms_many/events/rooms_many/'.$booking->getId(), server: $json);
+        self::assertResponseIsSuccessful();
+        $event = json_decode((string) $this->client->getResponse()->getContent(), true);
+        self::assertSame((string) $booking->getVersion(), $event['version']);
+
+        $start = $booking->getStartsAt()->modify('-1 day')->setTime(5, 0);
+        $body = json_encode(['start' => $start->format(\DATE_ATOM), 'end' => $start->modify('+30 minutes')->format(\DATE_ATOM)]);
+        $this->client->request('POST', '/api/calendars/rooms_many/events/rooms_many/'.$booking->getId().'/move', server: $json + ['HTTP_IF_MATCH' => '"'.$event['version'].'"'], content: $body);
+        self::assertResponseIsSuccessful();
+
+        // The same version again is stale now.
+        $this->client->request('POST', '/api/calendars/rooms_many/events/rooms_many/'.$booking->getId().'/move', server: $json + ['HTTP_IF_MATCH' => '"'.$event['version'].'"'], content: $body);
+        self::assertResponseStatusCodeSame(409);
+    }
+
     public function testUnknownCalendarsAreNotFound(): void
     {
         $client = $this->client;
