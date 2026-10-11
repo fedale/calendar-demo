@@ -17,6 +17,10 @@
             "button": {
                 "enabled": true,
                 "fetch": "lazy"
+            },
+            "interact": {
+                "enabled": true,
+                "fetch": "eager"
             }
         }
     },

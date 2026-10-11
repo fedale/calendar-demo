@@ -9,15 +9,16 @@ Each page feeds the same calendar component from a different source:
 | Page | What it shows |
 |---|---|
 | Shifts | Morning, afternoon and night shifts in month, week, day and list views; in the month, night shifts stay on the day they start (`nextDayThreshold`); public holidays are background bands, week numbers are on |
-| Seats | All-day desk bookings; other people's bookings are "Busy" because the source withholds their names; weekends are hidden |
+| Seats | All-day desk bookings; other people's bookings are "Busy" because the source withholds their names; your own (green) ones can be dragged to another day or deleted; weekends are hidden |
 | Lessons | A weekly timetable expanded by the source: a weekly list by default, and a week time grid limited to school hours, with business hours shaded |
 | Overview | The three sources above on one calendar |
-| Rooms | A resource timeline: rooms grouped by building, a room split into two nested halves, day / week / month, one column per room ("Columns"), business hours, and an "Add event" button handled in `assets/app.js` |
+| Rooms | An editable resource timeline: rooms grouped by building, a room split into two nested halves, day / week / month, one column per room ("Columns"), business hours. Drag bookings to move or resize them, drag over empty time to book, press Delete to cancel; overlapping bookings are refused. An "Add event" button is handled in `assets/app.js` |
 | Stress | About 500 events a month, to measure rendering cost |
 | Rooms many | The timeline with 50 rooms, to measure rendering cost |
 
 There is no database: the sources generate their events from a random generator seeded by the date,
-so a given day always shows the same events.
+so a given day always shows the same events. Your changes to rooms and desks are kept in your
+session, on top of the generated data.
 
 Requirements
 ------------

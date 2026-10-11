@@ -13,10 +13,10 @@ final class CalendarController extends AbstractController
     /** Calendar id => what the page demonstrates. */
     public const CALENDARS = [
         'shifts' => 'Night shifts cross midnight but stay on the day they start (nextDayThreshold), holidays are background bands, week numbers are on.',
-        'seats' => 'All-day bookings. Other people\'s desks are "Busy": the source withholds their names. Weekends are hidden.',
+        'seats' => 'All-day desk bookings. Other people\'s desks are "Busy": the source withholds their names. Drag your own (green) bookings to another day or press Delete to cancel them; a taken desk or a closed day is refused. Weekends are hidden.',
         'lessons' => 'A weekly timetable expanded by the source; the list view is the default, one week per page.',
         'overview' => 'Three unrelated sources on one calendar.',
-        'rooms' => 'A resource timeline: rooms grouped by building, a room split into two nested halves, day / week / month, and a custom "Add event" button.',
+        'rooms' => 'A resource timeline you can edit: drag a booking to move it (also to another room), drag its end to resize it, drag over empty time to book, Delete to cancel. Overlapping bookings in a room are refused by the source. Changes live in your session.',
         'stress' => 'About 500 events a month, to measure rendering cost.',
         'rooms_many' => 'The resource timeline with 50 rooms, to measure rendering cost.',
     ];

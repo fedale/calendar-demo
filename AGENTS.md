@@ -15,6 +15,10 @@ works right after `composer install`.
   and `ManyRoomsSource` for load tests. `DemoDays` seeds the random generator by
   source and date, so a day always yields the same events whatever range is requested; keep it that
   way, or navigation shows different data for the same day.
+- `src/Calendar/Booking/BookingStore.php` - the demo's "database": changes to the generated
+  bookings, per source, kept in the session. `RoomSource` and `SeatSource` are also the intent
+  handlers (`IntentHandlerInterface`) and hold the demo's domain rules (no overlapping bookings in a
+  room, one person per desk per day)
 - `src/Calendar/Definition/` - the calendars (`#[AsCalendar]`) and their `viewConfig()`
 - `src/Controller/CalendarController.php` - the pages; `CALENDARS` lists the demo calendars and what
   each one demonstrates

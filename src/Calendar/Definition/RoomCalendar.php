@@ -40,6 +40,9 @@ class RoomCalendar extends AbstractCalendar
                     'width' => '26rem',
                 ],
             ],
+            // Drag to move or resize a booking, drag over empty time to book a
+            // room, Delete to cancel; the source's handler applies the rules.
+            'behavior' => ['selectable' => true],
             'integration' => ['sources' => ['rooms']],
         ];
     }

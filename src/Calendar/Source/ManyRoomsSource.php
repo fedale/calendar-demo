@@ -16,7 +16,7 @@ final class ManyRoomsSource extends RoomSource
         $rooms = [];
         foreach (['Atrium', 'Harbor', 'Lakeside', 'Meridian', 'Summit'] as $b => $building) {
             for ($i = 1; $i <= 10; ++$i) {
-                $rooms[] = $this->room(sprintf('room-%d-%02d', $b, $i), sprintf('%s %02d', $building, $i), $building, 10 * ($i % 4 + 1));
+                $rooms[] = $this->roomResource(sprintf('room-%d-%02d', $b, $i), sprintf('%s %02d', $building, $i), $building, 10 * ($i % 4 + 1));
             }
         }
 
